@@ -7,7 +7,7 @@ export default function Home() {
    <div>
     <Navbar/>
     <WalletGenerator></WalletGenerator>
-
+    div
    </div>
   );
 }
