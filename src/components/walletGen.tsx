@@ -166,9 +166,35 @@ export function WalletGenerator() {
         navigator.clipboard.writeText(content)
         toast.success("Text copied to the Clipboard")
     }
-
+    const togglePrivateKeyVisibility = (index: number) => {
+        setVisiblePrivateKeys(
+          visiblePrivateKeys.map((visible, i) => (i === index ? !visible : visible))
+        );
+      };
+    
+      const togglePhraseVisibility = (index: number) => {
+        setVisiblePhrases(
+          visiblePhrases.map((visible, i) => (i === index ? !visible : visible))
+        );
+      };
+    
     const handleAddWallet = () => {
+    if(!mnemonics){
+        toast.error("No mnemonic is given ")
+        return
+    }
 
+    const wallet=GenerateWalletFromMnemonic(pathTypes[0],mnemonics.join(" "),wallets.length);
+    if(wallet){
+      const updatedWallets = [...wallets, wallet];
+      const updatedPathType = [pathTypes, pathTypes];
+      setWallets(updatedWallets);
+      localStorage.setItem("wallets", JSON.stringify(updatedWallets));
+      localStorage.setItem("pathTypes", JSON.stringify(updatedPathType));
+      setVisiblePrivateKeys([...visiblePrivateKeys, false]);
+      setVisiblePhrases([...visiblePhrases, false]);
+      toast.success("Wallet generated successfully!");
+    }
     }
     return <div>
 
