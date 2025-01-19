@@ -1,0 +1,8 @@
+neon green - 55a630   or 70e000 or 2dc653
+
+black - 000000 bg  020202 
+
+font -- satoshi font 
+
+theme - sky theme
+
