@@ -36,7 +36,7 @@ import { Wallet } from "../../types/Wallet";
 import { div } from "framer-motion/client";
 
 
-export function WalletGenerator() {
+export default function WalletGenerator() {
     const [mnemonics, setMnemonics] = useState<string[]>(Array(12).fill(" "))
     const [wallets, setWallets] = useState<Wallet[]>([])
     const [pathTypes, setPathTypes] = useState<string[]>([])
@@ -197,6 +197,66 @@ export function WalletGenerator() {
     }
     }
     return <div>
+       {wallets.length===0 && 
+        (<div>Web based wallet
+        { pathTypes.length===0 && (<div><button onClick={()=>setPathTypes(["501"])}>Solana</button>
+
+<button onClick={()=>setPathTypes(["60"])}>Ethereum</button></div>)
+
+        }
+       </div>)}
+     {pathTypes.length!==0 && (<div>
+     <input type="password" 
+      value={mnemonicInput}
+      placeholder="Enter your secret phrase (or leave blank to generate)"
+
+     onChange={(e)=>{setMnemonicInput(e.target.value)}} /> 
+      
+      <Button
+      onClick={()=>handleGenerateWallet()}
+      >{mnemonicInput ? "Add wallet ": "Generate Wallet"}</Button>
+     </div>)} 
+
+     {mnemonics && wallets.length>0 && (
+       <div>
+        <div>Your secret phrase
+       <button
+       onClick={()=>setShowMnemonic(!showMnemonic)}>
+        {showMnemonic ? (<ChevronUp/>):(<ChevronDown/>)}
+       </button>
+       </div>
+       {showMnemonic && <motion.div
+                   initial={{ opacity: 0, y: -20 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   transition={{
+                       duration: 0.3,
+                       ease: "easeInOut",
+                   }}
+                   className="flex flex-col items-center justify-center w-full"
+                   onClick={() => copyToClipboard(mnemonics.join(" "))}>
+       
+                   <motion.div
+                       initial={{ opacity: 0, y: -20 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       transition={{
+                           duration: 0.3,
+                           ease: "easeInOut",
+                       }}
+                       className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-center w-full items-center mx-auto my-8">
+                       {mnemonics.map((word, index) => (
+                           <p key={index}>{word}</p>
+                       ))}
+       
+                   </motion.div>
+       
+                   <div className="text-sm md:text-base text-primary/50 flex w-full gap-2 items-center group-hover:text-primary/80 transition-all duration-300">
+                       <Copy className="size-4" /> Click Anywhere To Copy
+                   </div>
+       
+               </motion.div>
+               }
+       </div>
+     )}
 
     </div>
 
