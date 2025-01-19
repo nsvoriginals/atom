@@ -137,6 +137,31 @@ export function WalletGenerator() {
 
     }
 
+    const handleGenerateWallet = () => {
+        let mnemonic = mnemonicInput.trim();
+        if (mnemonic) {
+            if (!validateMnemonic(mnemonic)) {
+                toast.error("Invalid Mnemonic Phrase");
+                return
+            }
+        } else {
+            mnemonic = generateMnemonic();
+        }
+        const words = mnemonic.split(" ");
+        setMnemonics(words)
+        const wallet = GenerateWalletFromMnemonic(pathTypes[0], mnemonic, wallets.length)
+        if (wallet) {
+            const updatedWallets = [...wallets, wallet];
+            setWallets(updatedWallets)
+            localStorage.setItem("wallets", JSON.stringify(updatedWallets));
+            localStorage.setItem("mnemonics", JSON.stringify(words));
+            localStorage.setItem("paths", JSON.stringify(pathTypes));
+            setVisiblePrivateKeys([...visiblePrivateKeys, false]);
+            setVisiblePhrases([...visiblePhrases, false]);
+            toast.success("Wallet generated successfully!");
+        }
+    }
+
     const copyToClipboard = (content: string) => {
         navigator.clipboard.writeText(content)
         toast.success("Text copied to the Clipboard")
