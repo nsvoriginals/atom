@@ -21,7 +21,7 @@ export default function Navbar() {
           <li>
             <Link href="#" className="flex items-center text-white hover:text-sky-300 transition-colors duration-200">
               <Twitter className="w-5 h-5 mr-2" />
-              <span className="font-semibold">Twitter</span>
+              <span className="font-semibold">Twitteradf</span>
             </Link>
           </li>
         </ul>
